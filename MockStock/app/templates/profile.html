@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h3>Current Balance</h3>
+    <p>{{ balance }}</p> <br>
+
+    <form action="" method="POST" onsubmit="return confirm_reset()">
+        <p>
+            {{ form.balance.label }}
+            {{ form.balance() }}<br>
+
+        </p>
+
+        <p>{{ form.reset() }}</p>
+
+        <p><a href="{{ url_for('change_username') }}">Change Username</a></p>
+        <a href="{{url_for('logout')}}">Logout</a>
+    </form>
+
+    <script>
+        function confirm_reset() {
+
+            let new_balance = document.getElementById("balance").value;
+            let message = "Are you sure you want to reset your account to $" + new_balance + "?";
+
+            if (new_balance > 50000)
+                return alert("You have to choose a balance within the range $5,000 - $50,000"), false;
+            else if (new_balance < 5000)
+                return alert("You have to choose a balance within the range $5,000 - $50,000"), false;
+            else
+                return confirm(message);
+        }
+    </script>
+
+{% endblock %}

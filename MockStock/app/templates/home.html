@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+    <h3 class="display-1" >Welcome {{ current_user.profile_name }}</h3>
+    <div>
+        <p id="balance"> Balance: {{current_user.balance}} </p>
+    </div>
+    <div class="container text-left">
+        <div class="row align-items-start">
+            <div class= "col">
+
+                {{ plot|safe }}
+                <hr>
+                <h4 class="display-4">Favorites</h4>
+                <div>
+                <form action="" method="post" novalidate>
+                {% if has_favorites %}
+
+                {% for stock in favorites_list_len %}
+
+                    <ul>
+                        <li>
+                            {{ favorites_data[stock].stock_ticker }} -- {{ favorites_price[stock] }} {{ curr_change[stock] }}
+                            <input type="checkbox" id="fav_stock" name="fav_stock" value="{{ favorites_data[stock].stock_ticker }}">
+                            <label for="fav_stock"> Unfavorite </label>
+                        </li>
+                    </ul>
+
+                {% endfor %}
+
+
+                {% else %}
+
+                <p> Here you can find your favorited stocks! Go ahead and add some to test it out! </p>
+
+                {% endif %}
+
+                <br>
+
+                {{ form.submit_changes() }}
+
+                </form>
+            </div>
+            </div>
+
+
+
+        <div class= "col">
+            {% if user_stock %}
+            <h4 class="display-4">Stocks owned</h4>
+
+            {% for stock in user_stock %}
+
+            <div  class="row">
+                <div class="col">
+                    <p id="{{ stock.ticker2 }}">{{stock.stock.name}} {{stock.stock.ticker}} </p>
+                </div>
+
+                <div class="col-sm-3">
+                    <form action="/stock_temp" method="post">
+                        <input type="hidden" name="ticker" value="{{ stock.stock.ticker }}">
+                        <input type="hidden" name="start_date" value="2023-01-01">
+                        <input type="hidden" name="end_date" value="2023-12-31">
+                        {% for fav in favorites %}
+                            {% if fav.stock_ticker == stock.stock.ticker %}
+                                {% if fav.favorited == True %}
+                                    <input type="hidden" name="fav_stock" value="True">
+                                {% else %}
+                                    <input type="hidden" name="fav_stock" value="False">
+                                {%  endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <button id="more-info-{{ stock.ticker2 }}" type="submit" class="btn btn-secondary btn-sm">More Info</button>
+                    </form>
+                </div>
+            </div>
+                {% endfor %}
+
+                <hr>
+            {% endif %}
+                <h6 class="display-6">All Stocks</h6>
+                <div style="height:500px;overflow-y:scroll; overflow-x:hidden;">
+
+                {% for stock in stocks %}
+                <div  class="row">
+                    <div class="col">
+                        <p id="{{ stock.ticker }}">{{ stock.name }} {{ stock.ticker }} </p>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <form action="/stock_temp" method="post">
+                            <input type="hidden" name="ticker" value="{{ stock.ticker }}">
+                            <input type="hidden" name="start_date" value="2023-01-01">
+                            <input type="hidden" name="end_date" value="2023-12-31">
+                            {% for fav in favorites %}
+                                {% if fav.stock_ticker == stock.ticker %}
+                                    {% if fav.favorited == True %}
+                                        <input type="hidden" name="fav_stock" value="True">
+                                    {% else %}
+                                        <input type="hidden" name="fav_stock" value="False">
+                                    {%  endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <button id="more-info-{{ stock.ticker }}" type="submit" class="btn btn-secondary btn-sm">More Info</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

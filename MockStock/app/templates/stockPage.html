@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1><mark>Stock Data: {{enteredText}}</mark></h1>
+
+<h3><mark>You own {{quantity}} shares</mark></h3>
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col">
+            <form action="/stock_temp" method="POST">
+                <p>
+                <center>
+                <input type="hidden"  name="ticker"  value="{{enteredText}}"><br><br>
+                <label for="start_date">Start date:</label>
+                <input type="date" id="start_date" name="start_date" required>
+                <label for="end_date">End date:</label>
+                <input type="date" id="end_date" name="end_date" required>
+                <input type="submit" class="btn btn-outline-secondary" value="Submit">
+                </center>
+                </p>
+            </form>
+            {% if result %}
+            <p><center>Price of {{enteredText}}: {{ result }}</center></p>
+            {% endif %}
+            
+            <form action="/buy" method="POST" id= "buy" onsubmit="return confirmPurchase()">
+                <center>
+                <input type="hidden" id="ticker2" name="ticker2"  value="{{enteredText}}"><br><br>
+                <label for="shares">Number of Shares:</label>
+                <input type="number"  id="shares" name="shares" min="1" required>
+                <input id= "buy-button" type="submit" class="btn btn-success" value="Buy">
+                </center>
+            </form>
+            <form action="/sell" method="POST" id="sell" onsubmit="return confirmSale()">
+                <center>
+                <input type="hidden"  id="ticker3" name="ticker3"  value="{{enteredText}}"><br><br>
+                <label for="shares2">Number of Shares:</label>
+                <input type="number" id="shares2" name="shares2" min="1" required>
+                <input id= sell-button type="submit" class="btn btn-success" value="Sell">
+                </center>
+            </form>
+
+            <br>
+
+            <form action="/stock_temp" method="POST">
+                {% if favorited %}
+                <center><p> {{ enteredText }} is already favorited </p></center>
+                {% else %}
+                <center><p> {{ enteredText }} is not favorited </p></center>
+                {% endif %}
+                <center><input type="checkbox" id="fav_stock" name="fav_stock" value="True">
+                <label for="fav_stock"> Favorite </label></center>
+
+                <input type="hidden" name="ticker" value="{{ enteredText }}">
+                <input type="hidden" name="start_date" value="2023-01-01">
+                <input type="hidden" name="end_date" value="2023-12-31">
+                <center><input type="submit" class="btn btn-success"></center>
+            </form>
+
+            <br>
+
+
+            
+        </div>
+        <div class="col">
+            <center>{{ plot_html|safe }} </center>
+        </div>
+    </div>
+</div>
+<hr>
+<h2><center>Articles</center></h2>
+<div class="container">
+    <br>
+    {% for article in news %}
+    <center><a href="{{article['link']}}"> {{article['title']}} </a></center><br>
+    {% endfor %}
+</div>
+
+
+<script>
+function confirmPurchase() {
+
+    var ticker = document.getElementById("ticker2").value;
+    var shares = document.getElementById("shares").value;
+    var message = "Are you sure you want to buy " + shares + " shares of " + ticker + "?";
+    return confirm(message);
+}
+</script>
+<script>
+function confirmSale() {
+
+    var ticker = document.getElementById("ticker3").value;
+    var shares = document.getElementById("shares2").value;
+    var message = "Are you sure you want to sell " + shares + " shares of " + ticker + "?";
+    return confirm(message);
+}
+</script>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+            {% for message in messages %}
+            <p><center><span id= "message" style="color: red;">{{ message }}</span></center></p>
+            {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+{% endblock %}

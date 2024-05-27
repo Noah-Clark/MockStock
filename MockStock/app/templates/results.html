@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Search Results</h1>
+
+{% for stock in stocklist %}
+<div class="row">
+    <div class="col-sm-4">
+        <p id="{{ stock.ticker }}">{{ stock.name }} {{ stock.ticker }} </p>
+    </div>
+{#        <!--    <td>{{ stock.price }}</td> UNTIL WE PUT PRICES IN THE DATABASE WILL NOT BE USED-->#}
+    <div class="col-sm-3">
+        <form action="/stock_temp" method="post">
+            <input type="hidden" name="ticker" value="{{ stock.ticker }}">
+            <input type="hidden" name="start_date" value="2023-01-01">
+            <input type="hidden" name="end_date" value="2023-12-31">
+            {% for fav in favorites %}
+                {% if fav.stock_ticker == stock.ticker %}
+                    {% if fav.favorited == True %}
+                        <input type="hidden" name="fav_stock" value="True">
+                    {% else %}
+                        <input type="hidden" name="fav_stock" value="False">
+                    {%  endif %}
+                {% endif %}
+            {% endfor %}
+            <button id="more-info-{{ stock.ticker }}" type="submit" class="btn btn-secondary btn-sm">More Info</button>
+        </form>
+    </div>
+</div>
+<br>
+{% endfor %}
+
+{% endblock %}
+

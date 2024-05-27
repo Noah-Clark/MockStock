@@ -1,0 +1,59 @@
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{{ url_for('login') }}">MockStock</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+</nav>
+    <p> </p>
+    <h3><center>Sign Up</center></h3>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p><center>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </center></p>
+        <p><center>
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}<br>
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </center></p>
+        <p><center>
+            {{ form.profile_name.label }}<br>
+            {{ form.profile_name(size=32) }}<br>
+            {% for error in form.profile_name.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </center></p>
+        <p><center>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </center></p>
+        <p><center>
+            {{ form.password2.label }}<br>
+            {{ form.password2(size=32) }}<br>
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </center></p>
+        <p><center>
+            {{ form.balance.label }}<br>
+            {{ form.balance(size=32) }}<br>
+            {% for error in form.balance.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </center></p>
+
+        <p><center>{{ form.submit() }}</center></p>
+    </form>
+{% endblock %}

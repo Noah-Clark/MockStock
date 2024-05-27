@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<html>
+<head>
+	<title>Transactions</title>
+</head>
+<body>
+    <h1>All Transactions</h1>
+	<table class="table">
+		<thead>
+			<tr>
+                <th scope="col">Action</th>
+				<th scope="col">Stock</th>
+				<th scope="col">Shares</th>
+				<th scope="col">Amount</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Time</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for transaction in transactionList %}
+			<tr  scope="row">
+				<td>{{ transaction.action| capitalize }}</td>
+				<td>{{ transaction.stock.ticker }}</td>
+				<td>{{ transaction.amount }}</td>
+				<td>{{ transaction.price }}</td>
+                <td>{{ transaction.price * transaction.amount }}</td>
+                <td>{{ transaction.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1> Stock Data </h1>
+<div>
+    <h2> {{ symbol }} </h2>
+    <p> GRAPH PLACEHOLDER</p>
+    <h3> Price: {{ price }} </h3>
+    <form action="" method="post" novalidate>
+        <input type="checkbox" id="fav_stock" name="fav_stock" value="{{symbol}}" checked> <label> Favorite </label>
+        {{ form.submit_changes() }}
+    </form>
+    <br>
+    <br>
+    <h3> Articles </h3>
+    {% for article in news %}
+        <a href="{{article['link']}}"> {{article['title']}} </a><br>
+    {% endfor %}
+</div>
+
+{% endblock %}
